@@ -89,7 +89,7 @@ void Game::generateMaze()
 
 void Game::displayMaze()
 {
-    system("cls");
+    cout << "\x1B[H"; 
     for (const auto& row : grid) {
         for (char cell : row) {
             cout << cell << " ";
