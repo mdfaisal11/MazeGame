@@ -49,7 +49,6 @@ public:
     void movePlayer(char direction);     // Handles player movement
     void playGame();                     // Main game loop
     void saveMaze();                     // Saves current game state to file
-    void loadMaze();                     // (Unused here but declared for future expansion)
 };
 
 // Constructor: Set initial game state
@@ -147,6 +146,31 @@ void Game::movePlayer(char direction) {
         cout << "Congratulations! You reached the exit!\n";
     }
 }
+// playGame(): Runs the main game loop until player wins or loses
+void Game::playGame() {
+    while (!gameOver) {
+        displayMaze();
+        cout << "Use W, A, S, D to move. Reach 'E' to win. Press Q to save and exit.\n";
+
+        char input = _getch(); // Read a single character
+        if (toupper(input) == 'Q') {
+            saveMaze();
+            break;
+        }
+
+        movePlayer(toupper(input));
+
+        // Move each enemy after player moves
+        for (auto& enemy : enemies) {
+            enemy->move(grid);
+        }
+
+        // Auto-save on game over
+        if (gameOver) {
+            saveMaze();
+        }
+    }
+}
 
 // saveMaze(): Save maze layout and player state to a text file
 void Game::saveMaze() {
@@ -172,32 +196,6 @@ void Game::saveMaze() {
 
     file.close();
     cout << "Game saved successfully!\n";
-}
-
-// playGame(): Runs the main game loop until player wins or loses
-void Game::playGame() {
-    while (!gameOver) {
-        displayMaze();
-        cout << "Use W, A, S, D to move. Reach 'E' to win. Press Q to save and exit.\n";
-
-        char input = _getch(); // Read a single character
-        if (toupper(input) == 'Q') {
-            saveMaze();
-            break;
-        }
-
-        movePlayer(toupper(input));
-
-        // Move each enemy after player moves
-        for (auto& enemy : enemies) {
-            enemy->move(grid);
-        }
-
-        // Auto-save on game over
-        if (gameOver) {
-            saveMaze();
-        }
-    }
 }
 
 // Enemy::move(): Move enemies randomly if next space is walkable
