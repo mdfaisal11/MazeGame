@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cstdlib>
 #include <ctime>
 #include <conio.h>      // For capturing user input without Enter key
 #include <fstream>      // For reading/writing to files
