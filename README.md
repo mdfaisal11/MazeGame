@@ -1,73 +1,103 @@
-Explanation:
-This is a console-based maze game where you control a player (P) to navigate through a randomly generated maze, collect items (Collectibles), avoid enemies (X), and reach the exit (E). The game features real-time movement, score tracking, and the ability to save your progress.
-Game Features
+This is a console-based maze game where you control a player (P) navigating a randomly generated maze. The goal is to collect items (*), avoid enemies (X), and reach the exit (E) to win. The game includes real-time movement, color output, score tracking, and a save feature.
+
 1. Maze Generation
-•	The maze is a 10x10 grid (adjustable via the SIZE constant)
-•	Outer borders are solid Walls
-•	Inner spaces randomly contain Collectibles (with a 1 in 8 chance)
-•	The player starts at position (1,1) — top-left corner inside the walls
-•	The exit is at position (SIZE-2,SIZE-2) — bottom-right corner inside the walls
-•	4 Enemies are randomly placed in empty spaces
+•	The maze uses a 20x20 grid (set via the SIZE constant).
+•	The outer borders (#) are solid walls.
+•	The inner area contains:
+o	Empty spaces ( )
+o	Collectibles (*), randomly placed with a 1-in-8 chance.
+•	The player starts at position (1,1).
+•	The exit is at (18,18) (bottom-right corner inside the walls).
+•	The number of enemies (X) increases with levels, starting at 3 + level * 2.
+
 2. Game Entities
-•	Player (P): Controlled by the user using WASD keys
-•	Walls: Impassable barriers
-•	Collectibles: Worth 10 points each when collected
-•	Enemies (X): Move randomly each turn, game ends if they touch the player
-•	Exit (E): Winning condition — game ends successfully when reached
+•	Player (P):
+o	Controlled using WASD keys.
+o	Can move freely unless blocked by a wall.
+o	Collects collectibles and tries to reach the exit.
+•	Walls (#):
+o	Surround the maze.
+o	Block movement.
+•	Collectibles (*):
+o	Give +10 points when collected.
+•	Enemies (X):
+o	Move randomly each turn.
+o	Touching one ends the game.
+•	Exit (E):
+o	Reaching it completes the level and generates a new maze.
+
 3. Game Mechanics
-•	Movement: Players and enemies can move up, down, left, or right
-•	Collision:
-o	Walls block movement
-o	Collectibles are picked up when moved over
-o	Enemies trigger game over on contact
-•	Scoring: Each Collectible gives +10 points
-•	Win Condition: Reach the Exit
-•	Lose Condition: Touch an Enemy
+•	Movement:
+o	Player uses W, A, S, D.
+o	Enemies move in random directions.
+•	Collision Handling:
+o	Walls (#): Cannot be moved through.
+o	Collectibles (*): Picked up, score increases.
+o	Enemies (X): If player collides — Game Over.
+•	Scoring:
+o	+10 points for each collectible.
+•	Winning Condition:
+o	Reach the Exit (E).
+•	Losing Condition:
+o	Collide with an Enemy (X).
+
 4. Special Features
-•	Real-time Input: Uses _getch() to read keys without needing Enter
-•	Screen Refresh: Uses ANSI escape codes to clear/update the display
-•	Save System: Can save game state to "maze.txt" (press Q)
-•	Object-Oriented Design: Uses classes for game entities and logic
-How to Play
+•	Real-Time Input:
+o	Uses _getch() to read movement keys instantly.
+•	Screen Refresh:
+o	Uses \x1B[H (ANSI escape code) for smooth updates (less flickering).
+•	Color Output:
+o	Player = Green, Enemy = Red, Exit = Blue, Collectibles = Yellow.
+•	Save System:
+o	Press Q anytime to save game state to maze.txt.
+•	OOP Design:
+o	Clean separation using Entity, Enemy, and Game classes.
+
+ How to Play
 Controls
 •	W: Move Up
 •	A: Move Left
 •	S: Move Down
 •	D: Move Right
-•	Q: Save Game and Exit
-Game Flow
-1.	At startup, choose option 1 to play or 2 to exit
-2.	The maze generates with random Walls, Collectibles, and Enemy positions
-3.	Navigate your Player (P) to the Exit (E) while:
-o	Collecting Collectibles for points
-o	Avoiding Enemies (X) that move randomly each turn
-4.	The game ends when you:
-o	Reach the Exit (win)
-o	Touch an Enemy (lose)
-o	Press Q to save and quit
-Technical Details
-•	The game uses a 2D vector (grid) to represent the maze state
-•	Enemy movement is randomized but validated to prevent wall-clipping
-•	The display updates after each move to show new positions
-•	Game state (maze layout, positions, score) can be saved to file
-Code Structure
-1.	Entity Class: Base class for all moving objects
-o	Tracks position (x, y)
-o	Defines pure virtual move() function
-2.	Enemy Class: Inherits from Entity
-o	Implements random movement algorithm
-o	Updates grid when moving
-3.	Game Class: Manages all game components
-o	Maze generation
-o	Player movement
-o	Game state tracking
-o	Display rendering
-o	File I/O for saving
-Potential Enhancements
-1.	Add multiple levels with increasing difficulty
-2.	Implement power-ups or special abilities
-3.	Add a time limit or move counter
-4.	Improve enemy AI (pathfinding toward player)
-5.	Add sound effects and more visual feedback
+•	Q: Save and Quit
 
-# MazeGame
+Game Flow
+1.	Launch the game, choose 1 to play or 2 to exit.
+2.	Maze is randomly generated:
+o	Player (P), Collectibles (*), Enemies (X), Exit (E) placed.
+3.	Navigate the player to the exit while:
+o	Collecting * for points.
+o	Avoiding enemies.
+4.	Game ends when:
+o	Player reaches the Exit (win, level up).
+o	Player collides with an Enemy (lose).
+o	Player presses Q (save and quit).
+
+Technical Details
+•	Grid: Implemented as a 2D vector<vector<char>> (grid).
+•	Enemy Movement:
+o	Randomly selected direction (up, down, left, right).
+o	Movement only valid if the cell is empty.
+•	Display:
+o	Clears and redraws the screen after each move.
+•	File I/O:
+o	Saves full maze layout, player/enemy positions, score, and state to maze.txt.
+
+ Code Structure
+1. Entity Class
+•	Base class for movable entities.
+•	Stores x, y position.
+•	Declares a pure virtual move() method for polymorphic behavior.
+2. Enemy Class
+•	Inherits from Entity.
+•	Implements random movement logic.
+•	Updates the grid to reflect new positions.
+3. Game Class
+•	Central class for the entire game.
+•	Responsibilities include:
+o	Maze generation
+o	Player/enemy movement
+o	Grid display and color output
+o	Score tracking and level progression
+o	File saving (saveGame())
+
