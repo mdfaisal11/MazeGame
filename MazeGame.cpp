@@ -149,7 +149,6 @@ public:
             }
         while (grid[ex][ey] != ' '); // Ensure enemy is placed on an empty space
             grid[ex][ey] = 'X'; // Mark enemy's position on the grid
-            enemies.push_back(new Enemy(ex, ey)); // Create and add new enemy to the list
         }
     }
 
@@ -221,7 +220,7 @@ public:
         {
             level++;  // Increase level
             cout << "Level Complete! Next level loading...\n";
-            _sleep(100); // Pause before next level
+            _sleep(50); // Pause before next level
             generateMaze(); // Generate a new maze for the next level
         }
     }
@@ -277,10 +276,10 @@ public:
         }
 
         // Save player position, exit position, score, and game over flag
-        file << playerX << " " << playerY << "\n";
-        file << exitX << " " << exitY << "\n";
-        file << score << "\n";
-        file << gameOver << "\n";
+        file << playerX << " " << playerY << endl;
+        file << exitX << " " << exitY << endl;
+        file << score << endl;
+        file << gameOver << endl;
 
         file.close();  // Close the file
         cout << "Game saved to maze.txt"<<endl;
@@ -293,7 +292,7 @@ int main()
     Game myGame;  // Create a Game object
 
     char choice;
-    cout << "==== MAZE GAME ===="<<endl;  // Game title
+    cout << "MAZE GAME"<<endl;  // Game title
     cout << "1. Play Game"<<endl;  // Option to play
     cout << "2. Exit"<<endl;  // Option to quit
     cout << "Choose option: ";
@@ -305,7 +304,7 @@ int main()
     }
     else
     {
-        cout << "See You Soon!"<<endl;  // Exit message
+        cout << "See You Soon."<<endl;  // Exit message
     }
 
     return 0;  // End the program
