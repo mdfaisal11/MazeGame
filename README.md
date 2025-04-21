@@ -1,103 +1,42 @@
-This is a console-based maze game where you control a player (P) navigating a randomly generated maze. The goal is to collect items (*), avoid enemies (X), and reach the exit (E) to win. The game includes real-time movement, color output, score tracking, and a save feature.
+Introduction
+This project is a 2D maze game developed in C++. It runs in the console and includes key features such as player navigation, enemy AI that moves randomly, collectible items, and level progression. Additionally, it allows the game state to be saved to a text file, which is helpful for continuing later.
 
-1. Maze Generation
-•	The maze uses a 20x20 grid (set via the SIZE constant).
-•	The outer borders (#) are solid walls.
-•	The inner area contains:
-o	Empty spaces ( )
-o	Collectibles (*), randomly placed with a 1-in-8 chance.
-•	The player starts at position (1,1).
-•	The exit is at (18,18) (bottom-right corner inside the walls).
-•	The number of enemies (X) increases with levels, starting at 3 + level * 2.
+Libraries and Constants
+To build this game, we’ve used multiple standard C++ libraries:
+- `iostream` for input and output,
+- `vector` for managing the 2D grid,
+- `ctime` to generate random directions for enemy movement,
+- `conio.h` to detect keyboard inputs without pressing Enter,
+- and `fstream` for reading and writing the game state to a file.
 
-2. Game Entities
-•	Player (P):
-o	Controlled using WASD keys.
-o	Can move freely unless blocked by a wall.
-o	Collects collectibles and tries to reach the exit.
-•	Walls (#):
-o	Surround the maze.
-o	Block movement.
-•	Collectibles (*):
-o	Give +10 points when collected.
-•	Enemies (X):
-o	Move randomly each turn.
-o	Touching one ends the game.
-•	Exit (E):
-o	Reaching it completes the level and generates a new maze.
+We’ve also used ANSI escape sequences to color different elements in the console, making the game visually clearer.
 
-3. Game Mechanics
-•	Movement:
-o	Player uses W, A, S, D.
-o	Enemies move in random directions.
-•	Collision Handling:
-o	Walls (#): Cannot be moved through.
-o	Collectibles (*): Picked up, score increases.
-o	Enemies (X): If player collides — Game Over.
-•	Scoring:
-o	+10 points for each collectible.
-•	Winning Condition:
-o	Reach the Exit (E).
-•	Losing Condition:
-o	Collide with an Enemy (X).
+Entity Class (Base Class)
+This is the base class for all moving entities in the game, like the player and enemies. It holds their `x` and `y` positions and has a virtual `move()` function. This allows us to define unique movement logic for enemies and potentially other future entities by overriding this function in derived classes.
 
-4. Special Features
-•	Real-Time Input:
-o	Uses _getch() to read movement keys instantly.
-•	Screen Refresh:
-o	Uses \x1B[H (ANSI escape code) for smooth updates (less flickering).
-•	Color Output:
-o	Player = Green, Enemy = Red, Exit = Blue, Collectibles = Yellow.
-•	Save System:
-o	Press Q anytime to save game state to maze.txt.
-•	OOP Design:
-o	Clean separation using Entity, Enemy, and Game classes.
+Enemy Class
+The `Enemy` class inherits from `Entity`. It implements the `move()` function, allowing the enemy to move randomly in one of four directions. But it only moves if the next space is empty. This prevents enemies from walking through walls or overlapping each other.
 
- How to Play
-Controls
-•	W: Move Up
-•	A: Move Left
-•	S: Move Down
-•	D: Move Right
-•	Q: Save and Quit
+Game Class - Overview
+This class handles the entire game logic. It maintains the grid (the maze), tracks the player and exit positions, and manages the score, level, and game status. It also holds a dynamic list of enemies that interact with the player during the game.
 
-Game Flow
-1.	Launch the game, choose 1 to play or 2 to exit.
-2.	Maze is randomly generated:
-o	Player (P), Collectibles (*), Enemies (X), Exit (E) placed.
-3.	Navigate the player to the exit while:
-o	Collecting * for points.
-o	Avoiding enemies.
-4.	Game ends when:
-o	Player reaches the Exit (win, level up).
-o	Player collides with an Enemy (lose).
-o	Player presses Q (save and quit).
+Maze Generation
+Every time a level is started or completed, a new maze is generated. The grid is filled with walls on the borders, and collectibles are placed randomly. Enemies are also added depending on the level. The maze always ensures the player starts at the top-left, and the exit is near the bottom-right.
 
-Technical Details
-•	Grid: Implemented as a 2D vector<vector<char>> (grid).
-•	Enemy Movement:
-o	Randomly selected direction (up, down, left, right).
-o	Movement only valid if the cell is empty.
-•	Display:
-o	Clears and redraws the screen after each move.
-•	File I/O:
-o	Saves full maze layout, player/enemy positions, score, and state to maze.txt.
+Displaying the Maze
+"The game uses a color-coded display in the console for better visibility. Players, enemies, exits, walls, and collectibles are each shown in different colors. The maze is printed row by row, and the current level and score are shown at the bottom."
 
- Code Structure
-1. Entity Class
-•	Base class for movable entities.
-•	Stores x, y position.
-•	Declares a pure virtual move() method for polymorphic behavior.
-2. Enemy Class
-•	Inherits from Entity.
-•	Implements random movement logic.
-•	Updates the grid to reflect new positions.
-3. Game Class
-•	Central class for the entire game.
-•	Responsibilities include:
-o	Maze generation
-o	Player/enemy movement
-o	Grid display and color output
-o	Score tracking and level progression
-o	File saving (saveGame())
+Player Movement
+The `movePlayer()` function handles movement using `W`, `A`, `S`, and `D` keys. The player can’t go through walls. If the player touches a collectible, the score increases. If they touch an enemy, it’s game over. Reaching the exit moves the player to the next level, where a new maze is generated.
 
+Game Loop
+The core gameplay happens in the `playGame()` loop. It continues until the game is over. In each cycle, it displays the maze, waits for a keypress, moves the player accordingly, and then moves the enemies. Pressing 'Q' allows the user to save and quit.
+
+Saving the Game
+When the player presses 'Q' or loses, the game is saved to a file called `maze.txt`. This file stores the entire grid, player and exit positions, current score, and whether the game is over. This allows players to resume where they left off.
+
+Main Function
+The `main()` function is the starting point of the game. It displays a menu where users can either play or exit. If they choose to play, the game loop begins.
+
+Summary
+In summary, this project applies Object-Oriented Programming concepts like **inheritance** and **polymorphism**. It uses real-time key detection, file handling, and randomized behavior for enemies. The code is modular, which makes it easy to extend in the future with more features.
