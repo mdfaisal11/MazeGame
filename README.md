@@ -39,4 +39,4 @@ Main Function
 The `main()` function is the starting point of the game. It displays a menu where users can either play or exit. If they choose to play, the game loop begins.
 
 Summary
-In summary, this project applies Object-Oriented Programming concepts like **inheritance** and **polymorphism**. It uses real-time key detection, file handling, and randomized behavior for enemies. The code is modular, which makes it easy to extend in the future with more features.
+In summary, this project applies Object-Oriented Programming concepts like inheritance and polymorphism. It uses real-time key detection, file handling, and randomized behavior for enemies. The code is modular, which makes it easy to extend in the future with more features.
